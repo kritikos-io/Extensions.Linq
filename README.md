@@ -9,3 +9,52 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/kritikos-io/Extensions.Linq)
 
 Common System.Linq extensions.
+
+## -If type extensions
+
+* WhereIf
+* TakeIf
+* SkipIf
+
+Allows queueing of multiple linq queries naturally instead of breaking the flow to provide condition checking.
+Typical example in an API trying to implement queries:
+
+```csharp
+var query = DbContext.EntityName.Where(x=>true);
+
+if (!string.IsNullOrEmpty(parameters.NameFilter)) {
+  query = query.Where(x=> x.Name.Contains(parametersNameFilter))
+}
+
+    [...]
+```
+
+Apart from the cognitive issues added by such a syntax, developers new to Entity Framework or hasty code writing might end up in something resembling
+
+```csharp
+var query = DbContext.EntityName.AsQueryable()
+```
+
+This is a major issue, as the extension method ```AsQueryable``` is not available in ```DbSet``` or ```IQueryable```, but in ```IEnumerable```, to which both DbSet and Queryable can be converted **implicitly**. This would force loading data for the entire table, and even worse, leaves an open database cursor, eventually leading to availability issues.
+
+Compare this to the safe and natural Linq syntax provided by these methods
+
+```csharp
+var query = DbContext.EntityName
+  .WhereIf(
+    !string.IsNullOrEmpty(parameters.NameFilter),
+    x=> x.Name.Contains(parametersNameFilter))
+
+    [...]
+```
+
+## Ordering Extensions
+
+* OrderByProperty
+* OrderByPropertyDescending
+* OrderByPropertyOrDefault
+* OrderByPropertyOrDefaultDescending
+
+Provides a set of methods allowing ordering a queryable by a property name (passed in as string). Also, an overload accepting a fallback selector is provided, in case the property does not exist on the specified type.
+
+**Important information**: As it should be apparent, this method of ordering relies on reflection. However, leveraging the dynamic keyword, polymorphic inline caching is used, so the reflection cost is paid only for the first time any such extension method is called for each type.
