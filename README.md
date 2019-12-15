@@ -58,3 +58,30 @@ var query = DbContext.EntityName
 Provides a set of methods allowing ordering a queryable by a property name (passed in as string). Also, an overload accepting a fallback selector is provided, in case the property does not exist on the specified type.
 
 **Important information**: As it should be apparent, this method of ordering relies on reflection. However, leveraging the dynamic keyword, polymorphic inline caching is used, so the reflection cost is paid only for the first time any such extension method is called for each type.
+
+*Initial implementation collaborated with [palladin](#contributors)
+
+## Deconstruction Extensions
+
+Provides deconstruct extension methods for all expressions under the System.Linq.Expressions namespace, for easy pattern matching, especially when leveraging the swich expression new to C# 8.0. Requested, and guided, by [palladin](#contributors).
+
+Feature was developed to faciliate the following kind of syntax, in order to provide the base for expression splicing, collaborated under [nessos/Splicer](splicer):
+
+```csharp
+expr = x => x + initial;
+
+var restructured = expr switch
+{
+  LambdaExpression(var param, BinaryExpression(ExpressionType.Add, var left, ConstantExpression(ExpressionType.Constant, _, initial)))
+    => Expression.Lambda(Expression.Add(left, Expression.Constant(addInstead)), param.ToArray()),
+
+  _
+    => throw new NotSupportedException()
+};
+```
+
+### Contributors
+
+* [palladin](https://github.com/palladin), aka [@NickPalladinos](https://twitter.com/NickPalladinos), high priest of the Old Ones, providing tips and guidance in return for blood sacrifice.
+
+[splicer]: https://github.com/nessos/Splicer
