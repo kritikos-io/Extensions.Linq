@@ -80,7 +80,7 @@ var restructured = expr switch
 };
 ```
 
-### Contributors
+## Contributors
 
 * [palladin](https://github.com/palladin), aka [@NickPalladinos](https://twitter.com/NickPalladinos), high priest of the Old Ones, providing tips and guidance in return for blood sacrifice.
 
