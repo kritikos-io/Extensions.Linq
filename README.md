@@ -59,7 +59,7 @@ Provides a set of methods allowing ordering a queryable by a property name (pass
 
 **Important information**: As it should be apparent, this method of ordering relies on reflection. However, leveraging the dynamic keyword, polymorphic inline caching is used, so the reflection cost is paid only for the first time any such extension method is called for each type.
 
-*Initial implementation collaborated with [palladin](#contributors)
+*Initial implementation was a collaboration with [palladin](#contributors)*
 
 ## Deconstruction Extensions
 
