@@ -16,7 +16,7 @@ namespace Kritikos.Extensions.LinqTests
 		private const int Skip = 5;
 		private static readonly Random Random = new Random();
 
-		private static IQueryable<int> GetRandomQueryable(int size, int min = 0, int max = 100)
+		internal static IQueryable<int> GetRandomQueryable(int size, int min = 0, int max = 100)
 		{
 			var arr = new int[size];
 			for (var i = 0; i < size; i++)
