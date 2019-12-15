@@ -61,6 +61,12 @@ Provides a set of methods allowing ordering a queryable by a property name (pass
 
 *Initial implementation was a collaboration with [palladin](#contributors)*
 
+## Pagination Extensions
+
+* Slice
+
+Simple and safe method to extract pages from Queryable datasets. Only available on ```IOrderedQueryable``` since this is the only way data parity can be enforced.
+
 ## Deconstruction Extensions
 
 Provides deconstruct extension methods for all expressions under the System.Linq.Expressions namespace, for easy pattern matching, especially when leveraging the swich expression new to C# 8.0. Requested, and guided, by [palladin](#contributors).
