@@ -55,7 +55,7 @@ var query = DbContext.EntityName
 * OrderByPropertyOrDefault
 * OrderByPropertyOrDefaultDescending
 
-Provides a set of methods allowing ordering a queryable by a property name (passed in as string). Also, an overload accepting a fallback selector is provided, in case the property does not exist on the specified type.
+Provides a set of methods allowing ordering a queryable by a property name (passed in as string). Also, an overload accepting a fallback selector is provided, in case the property does not exist on the specified type, or the property string is not populated.
 
 **Important information**: As it should be apparent, this method of ordering relies on reflection. However, leveraging the dynamic keyword, polymorphic inline caching is used, so the reflection cost is paid only for the first time any such extension method is called for each type.
 
