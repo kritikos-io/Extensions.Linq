@@ -11,7 +11,7 @@ namespace Kritikos.Extensions.LinqTests
 
 	public class QueryableOrderingTests
 	{
-		private static IQueryable<Animal> Animals { get; } = new List<Animal>
+		internal static IQueryable<Animal> Animals { get; } = new List<Animal>
 		{
 			new Animal { Id = 0, Name = "Sir Cat-a-lot" },
 			new Animal { Id = 1, Name = "Bark-a-lot" },
@@ -32,26 +32,6 @@ namespace Kritikos.Extensions.LinqTests
 			Assert.Equal(sortBySelectorDescending,sortByPropertyNameDescending);
 
 			Assert.Throws<ArgumentException>(() => Animals.OrderByPropertyDescending("Is"));
-		}
-
-		[Fact]
-		public void OrderByNameOrDefault()
-		{
-			var sortByPropertyName = Animals.OrderByPropertyOrDefault("Id", x => x.Name);
-			var sortByInvalidProperty = Animals.OrderByPropertyOrDefault("ib", x => x.Name);
-			var orderByName = Animals.OrderBy(x => x.Name);
-			var orderById = Animals.OrderBy(x => x.Id);
-
-			Assert.Equal(orderById,sortByPropertyName);
-			Assert.Equal(orderByName,sortByInvalidProperty);
-
-			var sortByPropertyNameDesc = Animals.OrderByPropertyOrDefaultDescending("Id", x => x.Name);
-			var sortByInvalidPropertyNameDesc = Animals.OrderByPropertyOrDefaultDescending("Ib", x => x.Name);
-			var orderByNameDesc = Animals.OrderByDescending(x => x.Name);
-			var orderByIdDesc = Animals.OrderByDescending(x => x.Id);
-
-			Assert.Equal(orderByIdDesc,sortByPropertyNameDesc);
-			Assert.Equal(orderByNameDesc,sortByInvalidPropertyNameDesc);
 		}
 	}
 }
