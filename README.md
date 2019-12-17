@@ -52,8 +52,8 @@ var query = DbContext.EntityName
 
 * OrderByProperty
 * OrderByPropertyDescending
-* OrderByPropertyOrDefault
-* OrderByPropertyOrDefaultDescending
+* ThenByProperty
+* ThenByPropertyDescending
 
 Provides a set of methods allowing ordering a queryable by a property name (passed in as string). Also, an overload accepting a fallback selector is provided, in case the property does not exist on the specified type, or the property string is not populated.
 
