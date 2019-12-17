@@ -2,10 +2,40 @@ namespace Kritikos.Extensions.Linq
 {
 	using System;
 	using System.Collections.Generic;
+	using System.ComponentModel;
 	using System.Linq;
+	using System.Linq.Expressions;
 
 	public static class OrderedQueryableExtensions
 	{
+		/// <summary>
+		/// Performs a subsequent ordering of the elements in a sequence in ascending order.
+		/// </summary>
+		/// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+		/// <param name="source">An <see cref="IOrderedQueryable{T}"/> that contains elements to sort.</param>
+		/// <param name="property">The name of the property to use in ordering.</param>
+		/// <returns>An <see cref="IOrderedQueryable{T}"/> whose elements are sorted according to <paramref name="property"/>in ascending order.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+		/// <exception cref="ArgumentException"><paramref name="property"/> does not exist on <typeparamref name="TSource"/> or is empty.</exception>
+		public static IOrderedQueryable<TSource> ThenByProperty<TSource>(
+			this IOrderedQueryable<TSource> source,
+			string property)
+			=> source.ThenByPropertyNameInDirection(ListSortDirection.Ascending, property);
+
+		/// <summary>
+		/// Performs a subsequent ordering of the elements in a sequence in descending order.
+		/// </summary>
+		/// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+		/// <param name="source">An <see cref="IOrderedQueryable{T}"/> that contains elements to sort.</param>
+		/// <param name="property">The name of the property to use in ordering.</param>
+		/// <returns>An <see cref="IOrderedQueryable{T}"/> whose elements are sorted according to <paramref name="property"/>in descending order.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+		/// <exception cref="ArgumentException"><paramref name="property"/> does not exist on <typeparamref name="TSource"/> or is empty.</exception>
+		public static IOrderedQueryable<TSource> ThenByPropertyDescending<TSource>(
+			this IOrderedQueryable<TSource> source,
+			string property)
+			=> source.ThenByPropertyNameInDirection(ListSortDirection.Descending, property);
+
 		/// <summary>
 		/// Returns <paramref name="size"/> elements, bypassing those on previous <paramref name="page"/> to facilitate paging.
 		/// </summary>
@@ -34,11 +64,35 @@ namespace Kritikos.Extensions.Linq
 
 			if (size == 0 && page > 1)
 			{
-				throw new ArgumentException("Size 0 should only be used with page number 1, otherwise data parity can not be guaranteed!");
+				throw new ArgumentException(
+					"Size 0 should only be used with page number 1, otherwise data parity can not be guaranteed!");
 			}
 
 			return source.Skip((page - 1) * size)
 				.TakeIf(size > 0, size);
+		}
+
+		private static IOrderedQueryable<TSource> ThenByPropertyNameInDirection<TSource>(
+			this IOrderedQueryable<TSource> source,
+			ListSortDirection direction,
+			string propertyName)
+		{
+			var entity = typeof(TSource);
+			var property = entity.GetProperty(propertyName);
+
+			if (property == null)
+			{
+				throw new ArgumentException($"Type of {entity.FullName} does not contain property {propertyName}!");
+			}
+
+			var arg = Expression.Parameter(entity, "x");
+			var body = Expression.Property(arg, propertyName);
+
+			dynamic selector = Expression.Lambda(body, arg);
+
+			return direction == ListSortDirection.Ascending
+				? Queryable.ThenBy(source, selector)
+				: Queryable.ThenByDescending(source, selector);
 		}
 	}
 }
