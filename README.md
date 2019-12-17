@@ -8,7 +8,7 @@
 ![GitHub language count](https://img.shields.io/github/languages/count/kritikos-io/Extensions.Linq)
 ![GitHub top language](https://img.shields.io/github/languages/top/kritikos-io/Extensions.Linq)
 
-Common System.Linq extensions.
+Opinionated System.Linq extensions for common operation, favoring fail fast philosophy.
 
 ## -If type extensions
 
