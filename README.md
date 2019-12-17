@@ -8,7 +8,7 @@
 ![GitHub language count](https://img.shields.io/github/languages/count/kritikos-io/Extensions.Linq)
 ![GitHub top language](https://img.shields.io/github/languages/top/kritikos-io/Extensions.Linq)
 
-Common System.Linq extensions.
+Opinionated System.Linq extensions for common operation, favoring fail fast philosophy.
 
 ## -If type extensions
 
@@ -52,8 +52,8 @@ var query = DbContext.EntityName
 
 * OrderByProperty
 * OrderByPropertyDescending
-* OrderByPropertyOrDefault
-* OrderByPropertyOrDefaultDescending
+* ThenByProperty
+* ThenByPropertyDescending
 
 Provides a set of methods allowing ordering a queryable by a property name (passed in as string). Also, an overload accepting a fallback selector is provided, in case the property does not exist on the specified type, or the property string is not populated.
 

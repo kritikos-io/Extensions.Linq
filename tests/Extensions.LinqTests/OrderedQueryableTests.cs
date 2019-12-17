@@ -43,5 +43,24 @@ namespace Kritikos.Extensions.LinqTests
 			page = arr.Slice(1, 0).ToList();
 			Assert.Equal(arrSize, page.Count);
 		}
+
+		[Fact]
+		public void ThenByTests()
+		{
+			var animals = QueryableOrderingTests.Animals.OrderByProperty("Id");
+
+			Assert.Throws<ArgumentException>(() => animals.ThenByProperty("Ib"));
+			Assert.Throws<ArgumentException>(() => animals.ThenByPropertyDescending("Ib"));
+
+			var withSelector = animals.ThenBy(x => x.Name);
+			var withProperty = animals.ThenByProperty("Name");
+
+			Assert.Equal(withSelector,withProperty);
+
+			var withSelectorDesc = animals.ThenBy(x => x.Name);
+			var withPropertyDesc = animals.ThenByProperty("Name");
+
+			Assert.Equal(withSelectorDesc, withPropertyDesc);
+		}
 	}
 }
