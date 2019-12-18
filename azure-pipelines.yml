@@ -150,7 +150,7 @@ jobs:
       artifactName: 'nuget'
       targetPath: $(build.artifactStagingDirectory)/nuget
   - task: DotNetCoreCLI@2
-    condition: ne(variables['Build.Reason'], 'PullRequest')
+    condition: and(ne(variables['Build.Reason'], 'PullRequest'), neq(variables['Build.SourceBranch'], 'refs/heads/master'))
     displayName: Push Nugets
     inputs:
       workingDirectory: $(build.artifactStagingDirectory)/nuget
@@ -160,3 +160,14 @@ jobs:
         push *.nupkg
         -s $(KritikosNuget)
         -k $(KritikosApiKey)
+  - task: DotNetCoreCLI@2
+    condition: and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    displayName: Push Nugets
+    inputs:
+      workingDirectory: $(build.artifactStagingDirectory)/nuget
+      command: 'custom'
+      custom: 'nuget'
+      arguments: >
+        push *.nupkg
+        -s $(NugetOrgUri)
+        -k $(NugetApiKey)
