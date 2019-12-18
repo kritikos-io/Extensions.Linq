@@ -125,12 +125,12 @@ jobs:
       ArtifactName: 'coverage'
       publishLocation: 'Container'
   - pwsh: |
-      ../csmacnz.Coveralls --repoToken "$(COVERALLS_KEY)" --opencover -i $(build.artifactStagingDirectory)/coverage/coverage.opencover.xml --useRelativePaths --commitId "$(Build.SourceVersion)" --commitBranch "$(Build.SourceBranchName)" --commitAuthor "$(Build.RequestedFor)" --commitEmail "$(Build.RequestedForEmail)" --commitMessage "$(Build.SourceVersionMessage)" --jobId "$(Build.BuildId)"
+      ../csmacnz.Coveralls --repoToken "$(COVERALLS_KEY)" --opencover -i $(build.artifactStagingDirectory)/coverage/coverage.opencover.xml --useRelativePaths --commitId "$(Build.SourceVersion)" --commitBranch "$(Build.SourceBranchName)" --commitAuthor "$(Build.RequestedFor)" --commitEmail "$(Build.RequestedForEmail)" --commitMessage "$(Build.SOURCEVERSIONMESSAGE))" --jobId "$(Build.BuildId)"
       ../codecov --token "$(CodeCovApiKey)" --file $(build.artifactStagingDirectory)/coverage/coverage.opencover.xml --branch "$(Build.SourceBranchName)" --sha "$(Build.SourceVersion)"
     condition: ne(variables['Build.Reason'], 'PullRequest')
     displayName: Push Coverage (commit)
   - pwsh: |
-      ../csmacnz.Coveralls --repoToken "$(COVERALLS_KEY)" --opencover -i $(build.artifactStagingDirectory)/coverage/coverage.opencover.xml --useRelativePaths --commitId "$(Build.SourceVersion)" --commitBranch "$(Build.SourceBranchName)" --commitAuthor "$(Build.RequestedFor)" --commitEmail "$(Build.RequestedForEmail)" --commitMessage "$(Build.SourceVersionMessage)" --jobId "$(Build.BuildId)" --pullRequest "$(System.PullRequest.PullRequestNumber)"
+      ../csmacnz.Coveralls --repoToken "$(COVERALLS_KEY)" --opencover -i $(build.artifactStagingDirectory)/coverage/coverage.opencover.xml --useRelativePaths --commitId "$(Build.SourceVersion)" --commitBranch "$(Build.SourceBranchName)" --commitAuthor "$(Build.RequestedFor)" --commitEmail "$(Build.RequestedForEmail)" --commitMessage "$(Build.SOURCEVERSIONMESSAGE)" --jobId "$(Build.BuildId)" --pullRequest "$(System.PullRequest.PullRequestNumber)"
       ../codecov --token "$(CodeCovApiKey)" --file $(build.artifactStagingDirectory)/coverage/coverage.opencover.xml --branch "$(Build.SourceBranchName)" --sha "$(Build.SourceVersion)" --pr "$(System.PullRequest.PullRequestNumber)"
     condition: eq(variables['Build.Reason'], 'PullRequest')
     displayName: Push Coverage (PR)
