@@ -2,6 +2,7 @@ namespace Kritikos.Extensions.Linq
 {
 	using System;
 	using System.ComponentModel;
+	using System.Diagnostics.CodeAnalysis;
 	using System.Linq;
 	using System.Linq.Expressions;
 	using System.Reflection;
@@ -36,7 +37,17 @@ namespace Kritikos.Extensions.Linq
 			string property)
 			=> source.OrderByPropertyNameInDirection(ListSortDirection.Descending, property);
 
-		private static IOrderedQueryable<TSource> OrderByPropertyNameInDirection<TSource>(
+		/// <summary>
+		/// Sorts the elements of a sequence by <paramref name="propertyName"/> in the selected order.
+		/// </summary>
+		/// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+		/// <param name="source">A sequence of values to order.</param>
+		/// <param name="direction">The direction to sort in.</param>
+		/// <param name="propertyName">The name of the property to use in ordering.</param>
+		/// <returns>An <see cref="IOrderedQueryable{T}"/> whose elements are sorted according to <paramref name="propertyName"/>in the selected order.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+		/// <exception cref="ArgumentException"><paramref name="propertyName"/> does not exist on <typeparamref name="TSource"/> or is empty.</exception>
+		public static IOrderedQueryable<TSource> OrderByPropertyNameInDirection<TSource>(
 			this IQueryable<TSource> source,
 			ListSortDirection direction,
 			string propertyName)
@@ -58,5 +69,24 @@ namespace Kritikos.Extensions.Linq
 				? Queryable.OrderBy(source, selector)
 				: Queryable.OrderByDescending(source, selector);
 		}
+
+		/// <summary>
+		/// Sorts the elements of a sequence in the selected order.
+		/// </summary>
+		/// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+		/// <typeparam name="TKey">The type of the property to sort by.</typeparam>
+		/// <param name="source">A sequence of values to order.</param>
+		/// /// <param name="selector">A key selector function.</param>
+		/// <param name="direction">The direction to sort in.</param>
+		/// <returns>An <see cref="IOrderedQueryable{T}"/> whose elements are sorted according to <paramref name="selector"/>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+		[ExcludeFromCodeCoverage]
+		public static IOrderedQueryable<TSource> OrderBy<TSource, TKey>(
+			IQueryable<TSource> source,
+			Expression<Func<TSource, TKey>> selector,
+			ListSortDirection direction)
+			=> direction == ListSortDirection.Ascending
+				? source.OrderBy(selector)
+				: source.OrderByDescending(selector);
 	}
 }
