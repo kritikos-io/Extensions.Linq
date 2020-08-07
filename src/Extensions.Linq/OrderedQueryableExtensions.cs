@@ -62,7 +62,9 @@ namespace Kritikos.Extensions.Linq
 				throw new ArgumentException("Page size should be greater than zero!", nameof(size));
 			}
 
+#pragma warning disable IDE0046 // Convert to conditional expression - Ternary operator would reduce readability
 			if (size == 0 && page > 1)
+#pragma warning restore IDE0046 // Convert to conditional expression
 			{
 				throw new ArgumentException(
 					"Size 0 should only be used with page number 1, otherwise data parity can not be guaranteed!");

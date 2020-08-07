@@ -1,7 +1,6 @@
-using System;
-
 namespace Kritikos.Extensions.LinqTests
 {
+	using System;
 	using System.Linq;
 
 	using Kritikos.Extensions.Linq;

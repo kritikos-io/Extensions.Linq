@@ -155,10 +155,8 @@ namespace Kritikos.Extensions.Linq
 		}
 
 		public static void Deconstruct(this LabelTarget expr, out string name)
-		{
-			name = expr?.Name
+			=> name = expr?.Name
 					?? throw new ArgumentNullException(nameof(expr));
-		}
 
 		public static void Deconstruct(
 			this LambdaExpression expr,

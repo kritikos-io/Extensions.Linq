@@ -1,3 +1,4 @@
+#nullable disable
 namespace Kritikos.Extensions.LinqTests
 {
 	using System;
