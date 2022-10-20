@@ -1,0 +1,10 @@
+<Project>
+  <ImportGroup Condition="Exists($([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))) == 'true'">
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+  </ImportGroup>
+
+  <PropertyGroup Label="Package">
+    <PackageProjectUrl>https://github.com/kritikos-io/Extensions.Linq</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/kritikos-io/Extensions.Linq</RepositoryUrl>
+  </PropertyGroup>
+</Project>
